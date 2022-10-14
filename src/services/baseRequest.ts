@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const baseRequest = axios.create({
 	baseURL: 'https://sticky-notes-server.onrender.com/api',
+	withCredentials: true,
 });
 
 export const privateRequest = axios.create({
