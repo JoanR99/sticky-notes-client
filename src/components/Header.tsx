@@ -30,10 +30,6 @@ const Header = () => {
 						<LinkItem to="/">Sticky Notes</LinkItem>
 					</Typography>
 
-					<Typography variant="h6" noWrap component="div">
-						<LinkItem to="/color">Add color</LinkItem>
-					</Typography>
-
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>
 						<Box sx={{ mr: 2 }}>
 							<SelectLanguage />
