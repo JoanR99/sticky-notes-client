@@ -8,7 +8,7 @@ import SelectLanguage from './SelectLanguage';
 
 const LinkItem = styled(Link)`
 	text-decoration: none;
-	color: #fffff;
+	color: #ffffff;
 	&:visited {
 		color: #ffffff;
 	}
@@ -28,6 +28,10 @@ const Header = () => {
 				>
 					<Typography variant="h6" noWrap component="div">
 						<LinkItem to="/">Sticky Notes</LinkItem>
+					</Typography>
+
+					<Typography variant="h6" noWrap component="div">
+						<LinkItem to="/color">Add color</LinkItem>
 					</Typography>
 
 					<Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -10,3 +10,17 @@ export const getColors =
 
 		return response.data;
 	};
+
+export const addColor =
+	(privateRequest: AxiosInstance, language: string) =>
+	async ({ name, hex }: { name: string; hex: string }): Promise<Color[]> => {
+		const response = await privateRequest.post(
+			'/colors',
+			{ name, hex },
+			{
+				headers: { 'Accept-Language': language },
+			}
+		);
+
+		return response.data;
+	};

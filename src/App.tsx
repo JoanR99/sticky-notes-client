@@ -10,6 +10,7 @@ import Register from './Screens/Register';
 import Login from './Screens/Login';
 import RequireAuth from './components/RequireAuth';
 import PersistLogin from './components/PersistLogin';
+import AddColor from './Screens/AddColor';
 
 function App() {
 	return (
@@ -22,6 +23,7 @@ function App() {
 						<Route element={<RequireAuth />}>
 							<Route path="/" element={<Notes />} />
 							<Route path="archived" element={<ArchivedNotes />} />
+							<Route path="/color" element={<AddColor />} />
 						</Route>
 					</Route>
 
