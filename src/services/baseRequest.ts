@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 export const baseRequest = axios.create({
-	baseURL: '/api',
+	baseURL: 'https://sticky-notes-server.onrender.com/api',
 });
 
 export const privateRequest = axios.create({
-	baseURL: '/api',
+	baseURL: 'https://sticky-notes-server.onrender.com/api',
 	withCredentials: true,
 });
 
