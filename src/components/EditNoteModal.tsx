@@ -12,8 +12,6 @@ import { useTranslation } from 'react-i18next';
 import useUpdateNote from '../hooks/useUpdateNote';
 import NoteForm from './NoteForm';
 import { Note, Color } from '../types/Note';
-import usePrivateRequest from '../hooks/usePrivateRequest';
-import { useAuth } from '../context/AuthProvider';
 
 interface Props {
 	show: boolean;
@@ -22,18 +20,10 @@ interface Props {
 }
 
 const EditNoteModal = ({ handleClose, show, note }: Props) => {
-	const { t, i18n } = useTranslation('translation');
+	const { t } = useTranslation('translation');
 	const queryClient = useQueryClient();
-	const { accessToken, changeAccessToken } = useAuth();
-	const privateRequest = usePrivateRequest(
-		accessToken,
-		changeAccessToken,
-		i18n.language
-	);
-	const { mutate: updateNote, isLoading } = useUpdateNote(
-		privateRequest,
-		i18n.language
-	);
+
+	const { mutate: updateNote, isLoading } = useUpdateNote();
 	const colors = queryClient.getQueryData('colors') as Color[];
 
 	const noteSchema = object({

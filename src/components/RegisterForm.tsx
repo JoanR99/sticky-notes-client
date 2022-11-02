@@ -13,14 +13,14 @@ import { RegisterCredentials } from '../types/Auth';
 import { AxiosError } from 'axios';
 
 const RegisterForm = () => {
-	const { t, i18n } = useTranslation('translation');
+	const { t } = useTranslation('translation');
 
 	const methods = useForm({
 		resolver: zodResolver(registerSchema()),
 		defaultValues,
 	});
 
-	const { mutate: register, isLoading } = useRegister(i18n.language);
+	const { mutate: register, isLoading } = useRegister();
 	const navigate = useNavigate();
 
 	const onHandleSubmit = async ({

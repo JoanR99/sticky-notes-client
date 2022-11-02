@@ -3,8 +3,9 @@ import { styled } from '@mui/material/styles';
 import { Box, AppBar, Toolbar, Typography } from '@mui/material';
 
 import Logout from './Logout';
-import { useAuth } from '../context/AuthProvider';
 import SelectLanguage from './SelectLanguage';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
 
 const LinkItem = styled(Link)`
 	text-decoration: none;
@@ -15,7 +16,7 @@ const LinkItem = styled(Link)`
 `;
 
 const Header = () => {
-	const { accessToken } = useAuth();
+	const [accessToken] = useAtom(accessTokenAtom);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>

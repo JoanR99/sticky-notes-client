@@ -1,6 +1,6 @@
 import { Box, Grid, Stack, Button, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { FormProvider, useForm, UseFormReturn } from 'react-hook-form';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import FormInput from './FormInput';

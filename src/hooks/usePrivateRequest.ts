@@ -1,51 +1,44 @@
-import { useEffect } from 'react';
-
 import { privateRequest } from '../services/baseRequest';
 import { getRefreshToken } from '../services/auth.services';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
+import { useTranslation } from 'react-i18next';
 
-const usePrivateRequest = (
-	accessToken: string,
-	changeAccessToken: (token: string) => void,
-	language: string
-) => {
-	useEffect(() => {
-		const requestIntercept = privateRequest.interceptors.request.use(
-			(config) => {
-				if (config.headers) {
-					if (!config.headers['Authorization']) {
-						config.headers['Authorization'] = `Bearer ${accessToken}`;
-					}
+const usePrivateRequest = () => {
+	const { i18n } = useTranslation();
+	const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
+
+	privateRequest.interceptors.request.use(
+		(config) => {
+			if (config.headers) {
+				if (!config.headers['Authorization']) {
+					config.headers['Authorization'] = `Bearer ${accessToken}`;
 				}
-
-				return config;
-			},
-			(error) => Promise.reject(error)
-		);
-
-		const responseIntercept = privateRequest.interceptors.response.use(
-			(response) => response,
-			async (error) => {
-				const prevRequest = error?.config;
-				if (error?.response?.status === 403 && !prevRequest?.sent) {
-					prevRequest.sent = true;
-
-					const { accessToken: newAccessToken } = await getRefreshToken(
-						language
-					);
-					changeAccessToken(newAccessToken);
-					prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
-					return privateRequest(prevRequest);
-				}
-				return Promise.reject(error);
 			}
-		);
 
-		return () => {
-			privateRequest.interceptors.request.eject(requestIntercept);
-			privateRequest.interceptors.response.eject(responseIntercept);
-		};
-	}, [accessToken]);
+			return config;
+		},
+		(error) => Promise.reject(error)
+	);
+
+	privateRequest.interceptors.response.use(
+		(response) => response,
+		async (error) => {
+			const prevRequest = error?.config;
+			if (error?.response?.status === 403 && !prevRequest?.sent) {
+				prevRequest.sent = true;
+
+				const { accessToken: newAccessToken } = await getRefreshToken(
+					i18n.language
+				);
+				setAccessToken(newAccessToken);
+				prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+				return privateRequest(prevRequest);
+			}
+			return Promise.reject(error);
+		}
+	);
 
 	return privateRequest;
 };

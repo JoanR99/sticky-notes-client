@@ -7,24 +7,25 @@ import { useTranslation } from 'react-i18next';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { MenuItem, IconButton, Menu } from '@mui/material';
 
-import { useAuth } from '../context/AuthProvider';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
 import useLogout from '../hooks/useLogout';
 import { AxiosError } from 'axios';
 import { Box } from '@mui/system';
 
 const Logout = () => {
-	const { t, i18n } = useTranslation('translation');
+	const { t } = useTranslation('translation');
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-	const { mutate: logoutUser, isLoading } = useLogout(i18n.language);
+	const { mutate: logoutUser, isLoading } = useLogout();
 	const navigate = useNavigate();
-	const { changeAccessToken } = useAuth();
+	const [, setAccessToken] = useAtom(accessTokenAtom);
 	const queryClient = useQueryClient();
 
 	const handleClick = () => {
 		//Pass undefined because mutate requires some kind of variable to add additional options even when not needed
 		logoutUser(undefined, {
 			onSuccess: (data) => {
-				changeAccessToken('');
+				setAccessToken('');
 				toast.success(t('logout.success'));
 				queryClient.clear();
 				navigate('/login');

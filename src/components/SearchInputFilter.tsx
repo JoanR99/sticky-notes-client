@@ -1,9 +1,10 @@
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import { useTranslation } from 'react-i18next';
 
-import { useFilter } from '../context/FilterProvider';
+import { useAtom } from 'jotai';
+import { searchFilterAtom } from '../atoms';
 
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
@@ -50,7 +51,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const SearchInputFilter = () => {
 	const { t } = useTranslation('translation');
-	const { searchFilter, changeSearchFilter } = useFilter();
+	const [searchFilter, setSearchFilter] = useAtom(searchFilterAtom);
 	return (
 		<Search>
 			<SearchIconWrapper>
@@ -60,7 +61,7 @@ const SearchInputFilter = () => {
 				placeholder={t('search.placeholder')}
 				inputProps={{ 'aria-label': t('search.placeholder') }}
 				value={searchFilter}
-				onChange={(e) => changeSearchFilter(e.target.value)}
+				onChange={(e) => setSearchFilter(e.target.value)}
 			/>
 		</Search>
 	);

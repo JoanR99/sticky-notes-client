@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { AxiosInstance } from 'axios';
-import { AddNote } from '../types/Note';
 import { addColor } from '../services/colors.services';
+import usePrivateRequest from './usePrivateRequest';
+import { useTranslation } from 'react-i18next';
 
-const useAddColor = (privateRequest: AxiosInstance, language: string) => {
-	const request = addColor(privateRequest, language);
+const useAddColor = () => {
+	const { i18n } = useTranslation();
+	const privateRequest = usePrivateRequest();
+	const request = addColor(privateRequest, i18n.language);
 	const queryClient = useQueryClient();
 
 	return useMutation(

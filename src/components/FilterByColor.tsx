@@ -1,22 +1,16 @@
 import { Box, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-import { useFilter } from '../context/FilterProvider';
 import useGetColors from '../hooks/useGetColors';
 import { Color } from '../types/Note';
-import usePrivateRequest from '../hooks/usePrivateRequest';
-import { useAuth } from '../context/AuthProvider';
+import { useAtom } from 'jotai';
+import { colorFilterAtom } from '../atoms';
 
 const FilterByColor = () => {
-	const { t, i18n } = useTranslation('translation');
-	const { accessToken, changeAccessToken } = useAuth();
-	const privateRequest = usePrivateRequest(
-		accessToken,
-		changeAccessToken,
-		i18n.language
-	);
-	const { data: colors } = useGetColors(privateRequest, i18n.language);
-	const { changeColorFilter, colorFilter } = useFilter();
+	const { t } = useTranslation('translation');
+
+	const { data: colors } = useGetColors();
+	const [colorFilter, setColorFilter] = useAtom(colorFilterAtom);
 
 	return (
 		<FormControl sx={{ m: 1, minWidth: 80 }}>
@@ -26,7 +20,7 @@ const FilterByColor = () => {
 			<Select
 				label={t('labels.select_color')}
 				labelId="colors"
-				onChange={(e) => changeColorFilter(e.target.value)}
+				onChange={(e) => setColorFilter(e.target.value)}
 				value={colorFilter}
 			>
 				<MenuItem key={0} value="all">

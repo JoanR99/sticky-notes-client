@@ -3,27 +3,14 @@ import { LoadingButton } from '@mui/lab';
 import { FormProvider, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTranslation } from 'react-i18next';
 
 import FormInput from '../components/FormInput';
 import { addColorSchema, defaultValues } from '../utils/addColorSchema';
-import { useAuth } from '../context/AuthProvider';
 import { AxiosError } from 'axios';
 import useAddColor from '../hooks/useAddColor';
-import usePrivateRequest from '../hooks/usePrivateRequest';
 
 const AddColor = () => {
-	const { t, i18n } = useTranslation('translation');
-	const { accessToken, changeAccessToken } = useAuth();
-	const privateRequest = usePrivateRequest(
-		accessToken,
-		changeAccessToken,
-		i18n.language
-	);
-	const { mutate: addColor, isLoading } = useAddColor(
-		privateRequest,
-		i18n.language
-	);
+	const { mutate: addColor, isLoading } = useAddColor();
 
 	const methods = useForm({
 		resolver: zodResolver(addColorSchema),

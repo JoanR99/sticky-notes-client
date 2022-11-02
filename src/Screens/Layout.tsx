@@ -3,10 +3,11 @@ import Container from '@mui/material/Container';
 
 import Header from '../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
-import { useAuth } from '../context/AuthProvider';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
 
 const Layout = () => {
-	const { accessToken } = useAuth();
+	const [accessToken] = useAtom(accessTokenAtom);
 	return (
 		<>
 			<Header />

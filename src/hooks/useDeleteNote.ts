@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from 'react-query';
-import { AxiosInstance } from 'axios';
-
+import usePrivateRequest from './usePrivateRequest';
+import { useTranslation } from 'react-i18next';
 import { deleteNote } from '../services/notes.services';
 
-const useDeleteNote = (privateRequest: AxiosInstance, language: string) => {
-	const request = deleteNote(privateRequest, language);
+const useDeleteNote = () => {
+	const { i18n } = useTranslation();
+	const privateRequest = usePrivateRequest();
+	const request = deleteNote(privateRequest, i18n.language);
 	const queryClient = useQueryClient();
 
 	return useMutation(async (id: number) => await request(id), {

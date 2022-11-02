@@ -3,11 +3,12 @@ import { Outlet } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import { getRefreshToken } from '../services/auth.services';
-import { useAuth } from '../context/AuthProvider';
 import FullScreenLoader from './FullScreenLoader';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
 
 const PersistLogin = () => {
-	const { accessToken, changeAccessToken } = useAuth();
+	const [accessToken, setAccessToken] = useAtom(accessTokenAtom);
 	const item: string | null = localStorage.getItem('persist');
 	const persist = item ? JSON.parse(item) : '';
 	const [isLoading, setIsLoading] = useState(true);
@@ -20,8 +21,7 @@ const PersistLogin = () => {
 				const { accessToken: newAccessToken } = await getRefreshToken(
 					i18n.language
 				);
-				console.log(newAccessToken);
-				changeAccessToken(newAccessToken);
+				setAccessToken(newAccessToken);
 			} catch (e) {
 				console.log(e);
 			} finally {

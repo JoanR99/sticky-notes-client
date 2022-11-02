@@ -8,8 +8,6 @@ import { AxiosError } from 'axios';
 import { useTranslation } from 'react-i18next';
 
 import useDeleteNote from '../hooks/useDeleteNote';
-import usePrivateRequest from '../hooks/usePrivateRequest';
-import { useAuth } from '../context/AuthProvider';
 
 interface Props {
 	show: boolean;
@@ -18,17 +16,9 @@ interface Props {
 }
 
 const DeleteNoteModal = ({ show, handleClose, id }: Props) => {
-	const { t, i18n } = useTranslation('translation');
-	const { accessToken, changeAccessToken } = useAuth();
-	const privateRequest = usePrivateRequest(
-		accessToken,
-		changeAccessToken,
-		i18n.language
-	);
-	const { mutate: deleteNote, isLoading } = useDeleteNote(
-		privateRequest,
-		i18n.language
-	);
+	const { t } = useTranslation('translation');
+
+	const { mutate: deleteNote, isLoading } = useDeleteNote();
 	const handleClick = async () => {
 		await deleteNote(id, {
 			onSuccess: () => {

@@ -1,18 +1,21 @@
 import { useQuery } from 'react-query';
 import { toast } from 'react-toastify';
-import { AxiosError, AxiosInstance } from 'axios';
+import { AxiosError } from 'axios';
 
 import { getNotes } from '../services/notes.services';
 import filterNotes from '../utils/filter';
+import usePrivateRequest from './usePrivateRequest';
+import { useTranslation } from 'react-i18next';
+import { useAtom } from 'jotai';
+import { colorFilterAtom, searchFilterAtom } from '../atoms';
 
-const useGetNotes = (
-	privateRequest: AxiosInstance,
-	colorFilter: string,
-	searchFilter: string,
-	language: string
-) => {
+const useGetNotes = () => {
+	const { i18n } = useTranslation();
+	const privateRequest = usePrivateRequest();
+	const [colorFilter] = useAtom(colorFilterAtom);
+	const [searchFilter] = useAtom(searchFilterAtom);
 	const isArchive = false;
-	const request = getNotes(privateRequest, language);
+	const request = getNotes(privateRequest, i18n.language);
 
 	return useQuery(
 		['notes', { isArchive }],

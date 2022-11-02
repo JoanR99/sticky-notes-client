@@ -52,10 +52,11 @@ const SelectLanguage = () => {
 				open={Boolean(anchorEl)}
 				onClose={handleClose}
 			>
-				{lngs?.map((lng) => (
+				{lngs?.map((lng, i) => (
 					<MenuItem
 						onClick={(e) => changeHandler(lng.code)}
 						sx={{ color: '#000000' }}
+						key={i}
 					>
 						{lng.nativeName}
 					</MenuItem>

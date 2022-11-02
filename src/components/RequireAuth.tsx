@@ -1,9 +1,9 @@
+import { useAtom } from 'jotai';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-
-import { useAuth } from '../context/AuthProvider';
+import { accessTokenAtom } from '../atoms';
 
 const RequireAuth = () => {
-	const { accessToken } = useAuth();
+	const [accessToken] = useAtom(accessTokenAtom);
 	const location = useLocation();
 
 	return accessToken ? (

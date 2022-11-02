@@ -16,12 +16,13 @@ import { useTranslation } from 'react-i18next';
 import FormInput from '../components/FormInput';
 import { loginSchema, defaultValues } from '../utils/loginSchema';
 import useLogin from '../hooks/useLogin';
-import { useAuth } from '../context/AuthProvider';
 import { AxiosError } from 'axios';
+import { useAtom } from 'jotai';
+import { accessTokenAtom } from '../atoms';
 
 const LoginForm = () => {
-	const { t, i18n } = useTranslation('translation');
-	const { mutate: login, isLoading } = useLogin(i18n.language);
+	const { t } = useTranslation('translation');
+	const { mutate: login, isLoading } = useLogin();
 
 	interface OwnLocation extends Location {
 		state: {
@@ -31,7 +32,7 @@ const LoginForm = () => {
 		};
 	}
 
-	const { changeAccessToken } = useAuth();
+	const [, setAccessToken] = useAtom(accessTokenAtom);
 	const navigate = useNavigate();
 	const location = useLocation() as OwnLocation;
 	const from = location.state?.from?.pathname || '/';
@@ -56,7 +57,7 @@ const LoginForm = () => {
 			{ email, password },
 			{
 				onSuccess: ({ accessToken }) => {
-					changeAccessToken(accessToken);
+					setAccessToken(accessToken);
 					localStorage.setItem('persist', JSON.stringify(persist));
 					reset();
 					navigate(from, { replace: true });

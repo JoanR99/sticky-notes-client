@@ -9,8 +9,6 @@ import { useTranslation } from 'react-i18next';
 
 import useUpdateNote from '../hooks/useUpdateNote';
 import { Note } from '../types/Note';
-import usePrivateRequest from '../hooks/usePrivateRequest';
-import { useAuth } from '../context/AuthProvider';
 
 interface Props {
 	show: boolean;
@@ -19,17 +17,9 @@ interface Props {
 }
 
 const ArchiveNoteModal = ({ show, handleClose, note }: Props) => {
-	const { t, i18n } = useTranslation('translation');
-	const { accessToken, changeAccessToken } = useAuth();
-	const privateRequest = usePrivateRequest(
-		accessToken,
-		changeAccessToken,
-		i18n.language
-	);
-	const { mutate: updateNote, isLoading } = useUpdateNote(
-		privateRequest,
-		i18n.language
-	);
+	const { t } = useTranslation('translation');
+
+	const { mutate: updateNote, isLoading } = useUpdateNote();
 	const handleClick = async () => {
 		await updateNote(
 			{ id: note?.id, newNote: { isArchive: !note?.isArchive } },

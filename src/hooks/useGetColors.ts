@@ -1,10 +1,13 @@
 import { useQuery } from 'react-query';
-import { AxiosInstance } from 'axios';
+import usePrivateRequest from './usePrivateRequest';
+import { useTranslation } from 'react-i18next';
 
 import { getColors } from '../services/colors.services';
 
-const useGetColors = (privateRequest: AxiosInstance, language: string) => {
-	const request = getColors(privateRequest, language);
+const useGetColors = () => {
+	const { i18n } = useTranslation();
+	const privateRequest = usePrivateRequest();
+	const request = getColors(privateRequest, i18n.language);
 
 	return useQuery('colors', async () => await request());
 };
